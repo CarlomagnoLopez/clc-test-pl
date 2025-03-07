@@ -3,14 +3,13 @@
 import { useEffect, useState } from "react";
 import "./globals.css";
 
-
 export default function Home() {
   // Se requiere mostrar un catálogo de pokemones que permita buscar por nombre, además de ordenar (Alfabéticamente, ascendente y descendente), donde se mostrarán 20 tarjetas por página con un total de 4 páginas. Cada card deberá mostrar imagen, nombre y defensa/ataque. La distribución de las cards tendrá que ser de 5 filas por 4 columnas con un espacio entre ellas de 8 px, cómo se muestra a continuación.
 
   const [pokemons, setPokemons] = useState()
   // const 
   const [totalPokemons, setTotalPokemons] = useState()
-  const [showPokemons, setshowPokemons] = useState()
+  // const [showPokemons, setshowPokemons] = useState()
   const limitToShow = 20;
   const [imgIndex,setImgIndex] = useState(0);
   // const start = 20;
@@ -25,11 +24,11 @@ export default function Home() {
   }, [])
 
   const nextPokemons = (page, paramPokes) => {
-    let rangeFinalPokemons = page * limitToShow;
-    let rangeStartPokemons = page * limitToShow - limitToShow;
+    const rangeFinalPokemons = page * limitToShow;
+    const rangeStartPokemons = page * limitToShow - limitToShow;
     setImgIndex(rangeStartPokemons)
   
-    let tempPokemons = [];
+    const tempPokemons = [];
 
     paramPokes.forEach((element, index) => {
       if (index >= rangeStartPokemons && index < rangeFinalPokemons) {
@@ -50,7 +49,7 @@ export default function Home() {
         <div className="grid grid-cols-4 gap-2">
           {pokemons && pokemons.map((item, index) => {
             // console.log(item)
-            let urlImage = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/" + ((index + imgIndex) + 1) + ".svg"
+            const urlImage = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/" + ((index + imgIndex) + 1) + ".svg"
             return (<div key={index} className="cardPokemon flex items-center">
               <img src={urlImage} width={40} />
               <div>
