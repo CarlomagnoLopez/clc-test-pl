@@ -7,12 +7,9 @@ export default function Home() {
   // Se requiere mostrar un catálogo de pokemones que permita buscar por nombre, además de ordenar (Alfabéticamente, ascendente y descendente), donde se mostrarán 20 tarjetas por página con un total de 4 páginas. Cada card deberá mostrar imagen, nombre y defensa/ataque. La distribución de las cards tendrá que ser de 5 filas por 4 columnas con un espacio entre ellas de 8 px, cómo se muestra a continuación.
 
   const [pokemons, setPokemons] = useState()
-  // const 
   const [totalPokemons, setTotalPokemons] = useState()
-  // const [showPokemons, setshowPokemons] = useState()
   const limitToShow = 20;
-  const [imgIndex,setImgIndex] = useState(0);
-  // const start = 20;
+  const [imgIndex, setImgIndex] = useState(0);
 
   useEffect(() => {
     fetch('https://pokeapi.co/api/v2/pokemon?limit=80')
@@ -20,20 +17,50 @@ export default function Home() {
       .then((res) => {
         nextPokemons(1, res.results)
         setTotalPokemons(res.results)
+
       })
   }, [])
+
+
+  const sortAscByName = (paramPokes) => {
+    paramPokes.sort(function (a, b) {
+      if (a.name < b.name) {
+        return -1;
+      }
+      if (a.name > b.name) {
+        return 1;
+      }
+      return 0;
+    });
+    nextPokemons(1, paramPokes)
+
+  }
+
+  const sortDescByName = (paramPokes) => {
+    paramPokes.sort(function (a, b) {
+      if (a.name > b.name) {
+        return -1;
+      }
+      if (a.name < b.name) {
+        return 1;
+      }
+      return 0;
+    });
+    nextPokemons(1, paramPokes)
+
+  }
 
   const nextPokemons = (page, paramPokes) => {
     const rangeFinalPokemons = page * limitToShow;
     const rangeStartPokemons = page * limitToShow - limitToShow;
     setImgIndex(rangeStartPokemons)
-  
+
     const tempPokemons = [];
 
     paramPokes.forEach((element, index) => {
       if (index >= rangeStartPokemons && index < rangeFinalPokemons) {
         tempPokemons.push(paramPokes[index])
-        console.log(index)
+        // console.log(index)
       }
     });
 
@@ -49,7 +76,10 @@ export default function Home() {
         <div className="grid grid-cols-4 gap-2">
           {pokemons && pokemons.map((item, index) => {
             // console.log(item)
-            const urlImage = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/" + ((index + imgIndex) + 1) + ".svg"
+            const imgNumber = item.url.replace('https://pokeapi.co/api/v2/pokemon/', '').replace('/', '')
+            console.log('imgNumber')
+            console.log(imgNumber)
+            const urlImage = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/" + (imgNumber) + ".svg"
             return (<div key={index} className="cardPokemon flex items-center">
               <img src={urlImage} width={40} />
               <div>
@@ -76,6 +106,16 @@ export default function Home() {
             onClick={() => { nextPokemons(4, totalPokemons) }}
 
             type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">4</button>
+
+          <button
+            onClick={() => { sortAscByName(totalPokemons) }}
+
+            type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Asc</button>
+
+          <button
+            onClick={() => { sortDescByName(totalPokemons) }}
+
+            type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Desc</button>
 
         </div>
       </main>
