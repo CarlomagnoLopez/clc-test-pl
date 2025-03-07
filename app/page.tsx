@@ -1,4 +1,6 @@
 // import Image from "next/image";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 "use client"
 import { useEffect, useState } from "react";
 import "./globals.css";
@@ -6,10 +8,10 @@ import "./globals.css";
 export default function Home() {
   // Se requiere mostrar un catálogo de pokemones que permita buscar por nombre, además de ordenar (Alfabéticamente, ascendente y descendente), donde se mostrarán 20 tarjetas por página con un total de 4 páginas. Cada card deberá mostrar imagen, nombre y defensa/ataque. La distribución de las cards tendrá que ser de 5 filas por 4 columnas con un espacio entre ellas de 8 px, cómo se muestra a continuación.
 
-  const [pokemons, setPokemons] = useState()
+  const [pokemons, setPokemons]:any = useState()
   const [totalPokemons, setTotalPokemons] = useState()
   const limitToShow = 20;
-  const [imgIndex, setImgIndex] = useState(0);
+  // const [imgIndex, setImgIndex] = useState(0);
 
   useEffect(() => {
     fetch('https://pokeapi.co/api/v2/pokemon?limit=80')
@@ -21,9 +23,8 @@ export default function Home() {
       })
   }, [])
 
-
-  const sortAscByName = (paramPokes) => {
-    paramPokes.sort(function (a, b) {
+  const sortAscByName = (paramPokes:any) => {
+    paramPokes.sort(function (a:any, b:any) {
       if (a.name < b.name) {
         return -1;
       }
@@ -35,9 +36,8 @@ export default function Home() {
     nextPokemons(1, paramPokes)
 
   }
-
-  const sortDescByName = (paramPokes) => {
-    paramPokes.sort(function (a, b) {
+  const sortDescByName = (paramPokes:any) => {
+    paramPokes.sort(function (a:any, b:any) {
       if (a.name > b.name) {
         return -1;
       }
@@ -50,14 +50,14 @@ export default function Home() {
 
   }
 
-  const nextPokemons = (page, paramPokes) => {
+  const nextPokemons = (page:any, paramPokes:any) => {
     const rangeFinalPokemons = page * limitToShow;
     const rangeStartPokemons = page * limitToShow - limitToShow;
-    setImgIndex(rangeStartPokemons)
+    // setImgIndex(rangeStartPokemons)
 
-    const tempPokemons = [];
+    const tempPokemons:any = [];
 
-    paramPokes.forEach((element, index) => {
+    paramPokes.forEach((element:any, index:any) => {
       if (index >= rangeStartPokemons && index < rangeFinalPokemons) {
         tempPokemons.push(paramPokes[index])
         // console.log(index)
@@ -74,7 +74,7 @@ export default function Home() {
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
         {/* <div>hi pokemon</div> */}
         <div className="grid grid-cols-4 gap-2">
-          {pokemons && pokemons.map((item, index) => {
+          {pokemons && pokemons.map((item:any, index:number) => {
             // console.log(item)
             const imgNumber = item.url.replace('https://pokeapi.co/api/v2/pokemon/', '').replace('/', '')
             console.log('imgNumber')
